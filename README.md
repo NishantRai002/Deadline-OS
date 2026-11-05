@@ -18,8 +18,8 @@ Agree on the database and route contract before parallel implementation. Use the
 
 | Owner | Owns | Suggested paths | First milestone |
 | --- | --- | --- | --- |
-| Teammate A: backend, data, cloud | Flask routes and services, authentication/authorization, SQL schema and queries, validation, attachment storage, Azure deployment and security | `app/`, `database/`, `docs/api.md`, `docs/data-model.md`, deployment config | Agree contracts; implement login, audience filtering, publishing and status updates |
-| Teammate B: frontend, UX, documentation | Page templates, responsive styling and browser interactions, accessible flows, screenshots/demo, report and user documentation | `app/templates/`, `app/static/`, `docs/ui-flows.md`, `docs/report/` | Agree contracts; create the login, student dashboard and staff publishing experience |
+| Teammate A — Yuvraj: backend, data, cloud and GitHub | Flask routes and services, authentication/authorization, SQL schema and queries, validation, attachment storage, Azure deployment/security, GitHub repository setup and issue/branch coordination | `app/`, `database/`, `docs/api.md`, `docs/data-model.md`, deployment config, GitHub repo | Set up and maintain the shared repo; agree contracts; implement login, audience filtering, publishing and status updates |
+| Teammate B — Nishant: frontend, UX and documentation | Page templates, responsive styling and browser interactions, accessible flows, screenshots/demo, report and user documentation | `app/templates/`, `app/static/`, `docs/ui-flows.md`, `docs/report/` | Agree contracts; create the login, student dashboard and staff publishing experience |
 
 Both teammates should contribute commits, review the other's pull requests, and take part in integration, security review, demo and report. Avoid assigning all documentation or testing to one person. Keep changes in the agreed paths where practical; coordinate shared files such as app startup and requirements before editing.
 
@@ -33,7 +33,7 @@ Both teammates should contribute commits, review the other's pull requests, and 
 
 ## GitHub setup for both teammates
 
-1. One teammate creates a **private** GitHub repository named `DeadlineOS`, adds the other as a collaborator, and pushes this project as the initial `main` branch.
+1. Yuvraj creates the **private** GitHub repository named `DeadlineOS` and invites Nishant as a collaborator.
 2. Both clone the same repository and configure their own Git identity. Never share GitHub passwords or personal access tokens.
 3. For each task, create a branch from an up-to-date `main`, commit only that task, push the branch, and open a pull request. The other teammate reviews it before merge.
 4. Use issues for the work items and owners listed in `docs/team-work-plan.md`. Both people should make meaningful commits under their own accounts; do not squash or re-author the partner's work just to make histories look balanced.
