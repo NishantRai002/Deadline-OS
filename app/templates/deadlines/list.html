@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Deadlines — DeadlineOS{% endblock %}
+
+{% block content %}
+<!--
+  Deadlines List Page
+  Author (Frontend): Yuvraj
+-->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="fw-bold mb-0"><i class="bi bi-calendar-check text-danger me-2"></i>All Deadlines</h3>
+  {% if current_user.is_faculty %}
+  <a href="{{ url_for('deadlines.create') }}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Add Deadline
+  </a>
+  {% endif %}
+</div>
+
+{% if deadlines %}
+<div class="row g-3">
+  {% for d in deadlines %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+        <h6 class="fw-bold mb-1">{{ d[1] }}</h6>
+        <p class="text-muted small mb-2">
+          <i class="bi bi-book me-1"></i>{{ d[3] or 'General' }}
+        </p>
+        <p class="mb-2">
+          <i class="bi bi-clock text-danger me-1"></i>
+          <span class="fw-semibold text-danger">
+            Due: {{ d[2].strftime('%d %b %Y, %I:%M %p') if d[2] else '—' }}
+          </span>
+        </p>
+
+        {% if current_user.is_student %}
+        <!-- Status selector for students — interacts with Nishant's AJAX endpoint -->
+        <div class="mt-2">
+          <select class="form-select form-select-sm status-select"
+                  data-id="{{ d[0] }}"
+                  data-url="{{ url_for('deadlines.update_status', deadline_id=d[0]) }}">
+            {% for s in ['pending', 'in_progress', 'completed'] %}
+            <option value="{{ s }}" {% if d[4] == s %}selected{% endif %}>
+              {{ s | replace('_', ' ') | title }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+  <i class="bi bi-calendar-x display-4 text-muted"></i>
+  <p class="text-muted mt-3">No deadlines found.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Live status update — calls Nishant's backend AJAX endpoint (Yuvraj)
+  document.querySelectorAll('.status-select').forEach(function (sel) {
+    sel.addEventListener('change', function () {
+      const form = new FormData();
+      form.append('status', this.value);
+      fetch(this.dataset.url, { method: 'POST', body: form })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) {
+            sel.classList.remove('border-danger');
+            sel.classList.add('border-success');
+            setTimeout(() => sel.classList.remove('border-success'), 1500);
+          }
+        })
+        .catch(() => sel.classList.add('border-danger'));
+    });
+  });
+</script>
+{% endblock %}

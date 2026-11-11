@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# Environment secrets — NEVER commit these
+.env
+
+# IDE files
+.vscode/
+.idea/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Flask / Python
+instance/
+*.egg-info/
+dist/
+build/
+
+# Uploads & temp files
+app/static/uploads/
+*.log
+
+# Azure credentials (just in case)
+*.publishsettings
+azuredeploy.parameters.json

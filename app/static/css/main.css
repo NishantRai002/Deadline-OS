@@ -1,0 +1,68 @@
+/*
+ * DeadlineOS — Main Stylesheet
+ * Author (Frontend): Yuvraj
+ */
+
+/* ── Global ─────────────────────────────────────────────────── */
+body {
+  background-color: #f4f6fb;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* ── Navbar ─────────────────────────────────────────────────── */
+.navbar-brand {
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.card {
+  border-radius: 12px;
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.09) !important;
+}
+
+/* ── Badges ─────────────────────────────────────────────────── */
+.badge {
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* ── Status select highlight (Deadlines page) ───────────────── */
+.status-select.border-success {
+  border-color: #198754 !important;
+  transition: border-color 0.4s ease;
+}
+
+.status-select.border-danger {
+  border-color: #dc3545 !important;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+footer {
+  background: #fff;
+  color: #6c757d;
+}
+
+/* ── Responsive tweaks ──────────────────────────────────────── */
+@media (max-width: 576px) {
+  .display-5 {
+    font-size: 2rem;
+  }
+}

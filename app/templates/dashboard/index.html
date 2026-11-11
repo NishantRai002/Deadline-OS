@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — DeadlineOS{% endblock %}
+
+{% block content %}
+<!--
+  Student / Faculty Dashboard
+  Author (Frontend): Yuvraj
+-->
+<div class="d-flex align-items-center justify-content-between mb-4">
+  <div>
+    <h2 class="fw-bold mb-0">Hello, {{ current_user.full_name.split()[0] }} 👋</h2>
+    <p class="text-muted mb-0">
+      {% if current_user.is_student %}
+        {{ current_user.program }} · Semester {{ current_user.semester }} · Section {{ current_user.section }}
+      {% else %}
+        {{ current_user.role | capitalize }}
+      {% endif %}
+    </p>
+  </div>
+  {% if current_user.is_faculty %}
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('announcements.create') }}" class="btn btn-outline-primary">
+      <i class="bi bi-megaphone me-1"></i>Post Notice
+    </a>
+    <a href="{{ url_for('deadlines.create') }}" class="btn btn-primary">
+      <i class="bi bi-plus-lg me-1"></i>Add Deadline
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<div class="row g-4">
+  <!-- ── Upcoming Deadlines ───────────────────────────────────── -->
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3 pb-0">
+        <h5 class="fw-bold mb-0"><i class="bi bi-calendar-check text-danger me-2"></i>Upcoming Deadlines</h5>
+        <a href="{{ url_for('deadlines.list_all') }}" class="btn btn-sm btn-outline-secondary">View All</a>
+      </div>
+      <div class="card-body">
+        {% if deadlines %}
+          <ul class="list-group list-group-flush">
+            {% for d in deadlines[:5] %}
+            <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+              <div>
+                <p class="mb-0 fw-semibold">{{ d[1] }}</p>
+                <small class="text-muted">
+                  {{ d[3] or 'General' }} &mdash;
+                  <span class="text-danger">{{ d[2].strftime('%d %b %Y') if d[2] else '—' }}</span>
+                </small>
+              </div>
+              {% if current_user.is_student %}
+              <span class="badge rounded-pill
+                {% if d[4] == 'completed' %}bg-success
+                {% elif d[4] == 'in_progress' %}bg-warning text-dark
+                {% else %}bg-secondary{% endif %}">
+                {{ (d[4] or 'pending') | replace('_', ' ') | title }}
+              </span>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted text-center py-4">No upcoming deadlines. 🎉</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Recent Announcements ────────────────────────────────── -->
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3 pb-0">
+        <h5 class="fw-bold mb-0"><i class="bi bi-megaphone text-primary me-2"></i>Recent Notices</h5>
+        <a href="{{ url_for('announcements.list_all') }}" class="btn btn-sm btn-outline-secondary">View All</a>
+      </div>
+      <div class="card-body">
+        {% if announcements %}
+          {% for a in announcements[:4] %}
+          <div class="mb-3 pb-3 border-bottom">
+            <a href="{{ url_for('announcements.detail', ann_id=a[0]) }}"
+               class="fw-semibold text-decoration-none text-dark">
+              {{ a[1] }}
+            </a>
+            <p class="text-muted small mb-0 mt-1 text-truncate">{{ a[2] }}</p>
+            <small class="text-muted">by {{ a[4] }} &mdash;
+              {{ a[3].strftime('%d %b %Y') if a[3] else '' }}</small>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted text-center py-4">No notices yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

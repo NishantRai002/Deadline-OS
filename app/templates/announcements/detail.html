@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ ann[1] }} — DeadlineOS{% endblock %}
+
+{% block content %}
+<!--
+  Announcement Detail Page
+  Author (Frontend): Yuvraj
+-->
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between mb-2">
+          <span class="text-muted small">
+            <i class="bi bi-person me-1"></i>{{ ann[4] }} &mdash;
+            {{ ann[3].strftime('%d %b %Y, %I:%M %p') if ann[3] else '' }}
+          </span>
+          <div>
+            {% if ann[5] %}<span class="badge bg-info text-dark me-1">{{ ann[5] }}</span>{% endif %}
+            {% if ann[6] %}<span class="badge bg-secondary">Sem {{ ann[6] }}</span>{% endif %}
+            {% if ann[7] %}<span class="badge bg-dark">Section {{ ann[7] }}</span>{% endif %}
+          </div>
+        </div>
+        <h3 class="fw-bold">{{ ann[1] }}</h3>
+        <hr />
+        <p class="lead" style="white-space: pre-wrap">{{ ann[2] }}</p>
+
+        {% if attachments and attachments[0][8] %}
+        <div class="mt-4">
+          <h6 class="fw-semibold text-muted"><i class="bi bi-paperclip me-1"></i>Attachments</h6>
+          <ul class="list-unstyled">
+            {% for a in attachments %}
+              {% if a[8] %}
+              <li>
+                <a href="{{ url_for('announcements.download', blob_name=a[8]) }}"
+                   class="text-decoration-none">
+                  <i class="bi bi-file-earmark-arrow-down me-1"></i>{{ a[9] }}
+                </a>
+              </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <div class="mt-4 d-flex gap-2">
+          <a href="{{ url_for('announcements.list_all') }}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i>Back
+          </a>
+          {% if current_user.is_faculty %}
+          <form method="POST" action="{{ url_for('announcements.delete', ann_id=ann[0]) }}"
+                onsubmit="return confirm('Remove this announcement?')">
+            <button class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-trash me-1"></i>Delete
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

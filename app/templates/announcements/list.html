@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Notices — DeadlineOS{% endblock %}
+
+{% block content %}
+<!--
+  Announcements List
+  Author (Frontend): Yuvraj
+-->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="fw-bold mb-0"><i class="bi bi-megaphone text-primary me-2"></i>Notices</h3>
+  {% if current_user.is_faculty %}
+  <a href="{{ url_for('announcements.create') }}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Post Notice
+  </a>
+  {% endif %}
+</div>
+
+{% if announcements %}
+<div class="list-group shadow-sm">
+  {% for a in announcements %}
+  <a href="{{ url_for('announcements.detail', ann_id=a[0]) }}"
+     class="list-group-item list-group-item-action border-0 mb-2 rounded shadow-sm p-3">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <h6 class="mb-1 fw-bold">{{ a[1] }}</h6>
+        <p class="mb-1 text-muted small text-truncate" style="max-width:500px">{{ a[2] }}</p>
+        <small class="text-muted">
+          <i class="bi bi-person me-1"></i>{{ a[4] }} &mdash;
+          {{ a[3].strftime('%d %b %Y') if a[3] else '' }}
+        </small>
+      </div>
+      <div class="text-end">
+        {% if a[5] %}
+        <span class="badge bg-info text-dark">{{ a[5] }}</span>
+        {% endif %}
+        {% if a[6] %}
+        <span class="badge bg-secondary">Sem {{ a[6] }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+  <i class="bi bi-megaphone display-4 text-muted"></i>
+  <p class="text-muted mt-3">No notices posted yet.</p>
+</div>
+{% endif %}
+{% endblock %}
